@@ -1,6 +1,38 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+public class Level
+{
+    public Level(string name, int id,int left,int right,int need, Func<int, int> lFMove, Func<int, int> lSMove, Func<int, int> rFMove, Func<int, int> rSMove)
+    {
+        Name = name;
+        this.id = id;
+        this.left = left;
+        this.right = Random.Range(1, right+1);
+        this.need = need;
+        LFMove = lFMove;
+        LSMove = lSMove;
+        RFMove = rFMove;
+        RSMove = rSMove;
+    }
+
+    public string Name { get; }
+    public int id { get; }
+    public int left {  get; }
+    public int right { get; }
+    public int need { get; }
+    public Func<int,int> LFMove {  get; }
+    public Func<int, int> LSMove {  get; }
+    public Func<int, int> RFMove {  get; }
+    public Func<int, int> RSMove {  get; }
+
+}
 
 public class MainGame : MonoBehaviour
 {
@@ -23,6 +55,16 @@ public class MainGame : MonoBehaviour
     [SerializeField]
     int needScore = 77;
 
+    List<Level> levels = new() { 
+        new Level("Легкий", 1,7,69,77, (left) => { return left+=1; }, (left) => { return left *= 2; }, (right) => { return right++; }, (right) => { return right *= 2; }),
+        new Level("Легкий+", 2,4,77,82, (left) => { return left+=1; }, (left) => { return left *= 4; }, (right) => { return right++; }, (right) => { return right *= 4; }),
+        new Level("Средний", 3,3,57,61, (left) => { return left+=1; }, (left) => { return left *= 4; }, (right) => { return right++; }, (right) => { return right *= 4; }),
+        new Level("Средний+", 4,8,32,41, (left) => { return left+=1; }, (left) => { return left *= 4; }, (right) => { return right++; }, (right) => { return right *= 4; }),
+    
+    
+    
+    };
+
     [SerializeField]
     int right = 3;
     [SerializeField]
@@ -32,7 +74,8 @@ public class MainGame : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CheckSum();
+        Visual();
+        print(left = levels.First().LFMove(left));
     }
 
     // Update is called once per frame
@@ -55,7 +98,7 @@ public class MainGame : MonoBehaviour
         else if(right*2 + left >= needScore) {right*=2; CheckSum(); }
         else
         {
-            int t = Random.Range(0, 4);
+            int t = UnityEngine.Random.Range(0, 4);
             switch (t)
             {
                 case 0:
@@ -79,9 +122,7 @@ public class MainGame : MonoBehaviour
     }
     void CheckSum()
     {
-        summ.text = "Сумма камней: \n" + (left + right);
-        leftText.text = left.ToString();
-        rightText.text = right.ToString();
+        Visual();
         if (left + right >= needScore)
         {
             GamePanel.SetActive(false);
@@ -105,6 +146,12 @@ public class MainGame : MonoBehaviour
                 player = true;
             }
         }
+    }
+    void Visual()
+    {
+        summ.text = "Сумма камней: \n" + (left + right);
+        leftText.text = left.ToString();
+        rightText.text = right.ToString();
     }
 
     public void LeftFirstMove()
