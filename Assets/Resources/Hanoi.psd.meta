@@ -1,16 +1,28 @@
 fileFormatVersion: 2
-guid: aac10aeb1db18774082134274b9eb90d
+guid: e03ef0c26e1dba54ca678bc5eee98691
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8500823272767830682
-    second: 1662462879_494277_0
+      213: 400094748204244325
+    second: Hanoi_0
   - first:
-      213: 1308759351483217802
-    second: 1662462879_494277_1
+      213: -2279787174967834799
+    second: Hanoi_1
   - first:
-      213: -8664802301908625537
-    second: 1662462879_494277_2
+      213: 2895749183908068724
+    second: Hanoi_2
+  - first:
+      213: -2628152709946058060
+    second: Hanoi_3
+  - first:
+      213: -9186536639244471195
+    second: Hanoi_4
+  - first:
+      213: 1879023552211514639
+    second: Hanoi_5
+  - first:
+      213: 1589598945337259941
+    second: Hanoi_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +118,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 1662462879_494277_0
+      name: Hanoi_0
       rect:
         serializedVersion: 2
-        x: 43
-        y: 130
-        width: 2547
-        height: 1348
+        x: 128
+        y: 449
+        width: 145
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +133,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a9a33bf2abdf8f570800000000000000
-      internalID: 8500823272767830682
+      spriteID: 56d963fbd0c6d8500800000000000000
+      internalID: 400094748204244325
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1662462879_494277_1
+      name: Hanoi_1
       rect:
         serializedVersion: 2
-        x: 130
-        y: 103
-        width: 128
-        height: 106
+        x: 107
+        y: 377
+        width: 186
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a87b0a132b5a92210800000000000000
-      internalID: 1308759351483217802
+      spriteID: 1570d88a4a19c50e0800000000000000
+      internalID: -2279787174967834799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1662462879_494277_2
+      name: Hanoi_2
       rect:
         serializedVersion: 2
-        x: 292
-        y: 119
-        width: 105
-        height: 91
+        x: 84
+        y: 305
+        width: 232
+        height: 56
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +177,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f77dfb9e63070c780800000000000000
-      internalID: -8664802301908625537
+      spriteID: 47db7795a84cf2820800000000000000
+      internalID: 2895749183908068724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hanoi_3
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 233
+        width: 272
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ba5f2ce80de68bd0800000000000000
+      internalID: -2628152709946058060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hanoi_4
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 161
+        width: 312
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 564f8b5599dd28080800000000000000
+      internalID: -9186536639244471195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hanoi_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 89
+        width: 336
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f05f82a17f1a31a10800000000000000
+      internalID: 1879023552211514639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hanoi_6
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 17
+        width: 377
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a7b92891d36f0610800000000000000
+      internalID: 1589598945337259941
       vertices: []
       indices: 
       edges: []
@@ -184,10 +284,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      1662462879_494277_0: 8500823272767830682
-      1662462879_494277_1: 1308759351483217802
-      1662462879_494277_2: -8664802301908625537
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
