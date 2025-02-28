@@ -1,7 +1,9 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 
@@ -22,6 +24,8 @@ public class HanoiGame : MonoBehaviour
     GameObject rightTower;
     [SerializeField]
     GameObject centerTower;
+    [SerializeField]
+    HanoiLevels levels;
 
     [SerializeField]
     GameObject curRing;
@@ -56,6 +60,7 @@ public class HanoiGame : MonoBehaviour
         }
         lt.Start();
     }
+
 
 
     // Update is called once per frame
@@ -121,7 +126,7 @@ public class HanoiGame : MonoBehaviour
             }
             curRing = null;
             if (rightTower.GetComponent<Tower>().rings.Count >= count) {
-                print("Win");
+                levels.Win();
             }
 
         }
