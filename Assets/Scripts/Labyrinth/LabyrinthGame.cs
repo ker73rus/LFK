@@ -38,7 +38,7 @@ public class LabyrinthGame : MonoBehaviour
         }
         marks.Clear();
         player = (0, 0);
-        Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
+        Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
         if (level == 2)
         {
             map = new()
@@ -56,26 +56,27 @@ public class LabyrinthGame : MonoBehaviour
         {
             map = new()
             {
-                new List<int>(){ 2,0,0,0,1,0,0 },
-                new List<int>(){ 0,1,1,1,1,1,0 },
-                new List<int>(){ 0,0,0,0,0,1,0 },
-                new List<int>(){ 1,1,0,1,0,0,0 },
-                new List<int>(){ 0,0,0,1,0,1,0 },
-                new List<int>(){ 0,1,1,1,0,1,0 },
-                new List<int>(){ 3,1,0,0,0,0,0 },
+                new List<int>(){ 2,0,0,0,1,0,0, 1 },
+                new List<int>(){ 0,1,1,1,1,1,0, 1 },
+                new List<int>(){ 0,0,0,0,0,1,0, 1 },
+                new List<int>(){ 1,1,0,1,0,0,0, 0 },
+                new List<int>(){ 0,0,0,1,0,1,0, 1 },
+                new List<int>(){ 0,1,1,1,0,1,0, 1 },
+                new List<int>(){ 0,1,0,0,0,1,0, 1 },
+                new List<int>(){ 3,1,0,1,0,1,0, 0 },
             };
         }
     }
     public void Up()
     {
-        if(player.y - 1 >= 0)
+        if (player.y - 1 >= 0)
         {
-            if (map[player.y -1][player.x] == 3)
+            if (map[player.y - 1][player.x] == 3)
                 Level.Win();
             else if (map[player.y - 1][player.x] != 1)
             {
                 player.y -= 1;
-                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
+                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
             }
         }
     }
@@ -83,12 +84,12 @@ public class LabyrinthGame : MonoBehaviour
     {
         if (player.y + 1 < size)
         {
-            if (map[player.y +1][player.x] == 3)
+            if (map[player.y + 1][player.x] == 3)
                 Level.Win();
             else if (map[player.y + 1][player.x] != 1)
             {
                 player.y += 1;
-                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
+                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
             }
         }
     }
@@ -101,7 +102,7 @@ public class LabyrinthGame : MonoBehaviour
             else if (map[player.y][player.x - 1] != 1)
             {
                 player.x -= 1;
-                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
+                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
             }
         }
     }
@@ -114,7 +115,7 @@ public class LabyrinthGame : MonoBehaviour
             else if (map[player.y][player.x + 1] != 1)
             {
                 player.x += 1;
-                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
+                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
             }
         }
     }
@@ -129,6 +130,25 @@ public class LabyrinthGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Up();
+        }
+        else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            Down();
+        }
+        else if( Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            Left();
+        }
+        else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            Right();
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Mark();
+        }
     }
 }

@@ -26,9 +26,8 @@ public class UltimatumLevels : MonoBehaviour
     }
     IEnumerator WinC()
     {
-        yield return new WaitForSeconds(1);
         WinPanel.SetActive(true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         toLevelsPanel();
     }
 

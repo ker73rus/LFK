@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaterGame : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class WaterGame : MonoBehaviour
     int maxRight = 0;
     [SerializeField]
     WaterLevel level;
+    [SerializeField]
+    Image LeftImage;
+    [SerializeField]
+    Image RightImage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
@@ -31,6 +36,8 @@ public class WaterGame : MonoBehaviour
     {
         lText.text = nowLeft.ToString();
         rText.text = nowRight.ToString();
+        LeftImage.fillAmount = 0.67f * nowLeft/maxLeft ;
+        RightImage.fillAmount = 0.67f * nowRight/maxRight ;
     }
 
 

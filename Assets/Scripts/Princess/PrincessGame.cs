@@ -5,6 +5,72 @@ using UnityEngine;
 
 public class PrincessGame : MonoBehaviour
 {
+    public static List<List<int>> GenerateMap(int width, int height, int minCost, int maxCost)
+    {
+        List<List<int>> map = new List<List<int>>();
+
+        for (int i = 0; i < height; i++)
+        {
+            List<int> row = new List<int>();
+            for (int j = 0; j < width; j++)
+            {
+                row.Add(Random.Range(minCost, maxCost + 1));
+            }
+            map.Add(row);
+        }
+
+        map[height - 1][width - 1] = 0;
+        return map;
+    }
+
+    public static int FindOptimalPath(List<List<int>> map)
+    {
+        int height = map.Count;
+        int width = map[0].Count;
+
+        int[,] cost = new int[height, width];
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                cost[i, j] = int.MaxValue;
+
+        List<(int x, int y, int cost)> queue = new List<(int, int, int)>();
+
+        queue.Add((0, 0, map[0][0]));
+        cost[0, 0] = map[0][0];
+
+        int[] dx = { 1, 0 };
+        int[] dy = { 0, 1 };
+
+        while (queue.Count > 0)
+        {
+            queue.Sort((a, b) => a.cost.CompareTo(b.cost));
+
+            var (x, y, currentCost) = queue[0];
+            queue.RemoveAt(0);
+
+            if (x == height - 1 && y == width - 1)
+                return currentCost;
+
+            for (int i = 0; i < 2; i++)
+            {
+                int newX = x + dx[i];
+                int newY = y + dy[i];
+
+                if (newX >= 0 && newX < height && newY >= 0 && newY < width)
+                {
+                    int newCost = currentCost + map[newX][newY];
+
+                    if (newCost < cost[newX, newY])
+                    {
+                        cost[newX, newY] = newCost;
+                        queue.Add((newX, newY, newCost));
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField]
     (int x, int y) player = (0, 0);
@@ -41,30 +107,13 @@ public class PrincessGame : MonoBehaviour
         Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
         if (level == 2)
         {
-            map = new()
-            {
-                new List<int> { 1, 2, 3, 5, 6, 7, 9 },
-                new List<int> { 2, 1, 4, 6, 8, 9, 10 },
-                new List<int> { 3, 2, 2, 4, 5, 7, 8 },
-                new List<int> { 5, 4, 3, 2, 3, 4, 6 },
-                new List<int> { 7, 6, 4, 3, 2, 2, 3 },
-                new List<int> { 8, 7, 6, 5, 4, 1, 2 },
-                new List<int> { 9, 8, 7, 6, 5, 3, 0 }
-            };
-            max = 22;
+            map = GenerateMap(size, size, 1, 10);
+            max = FindOptimalPath(map) + 5;
         }
         else if (level == 3)
         {
-            map =  new List<List<int>> {
-                new List<int> { 10, 9, 8, 7, 6, 5, 4 },
-                new List<int> { 10, 10, 7, 6, 5, 4, 3 },
-                new List<int> { 10, 10, 6, 5, 4, 3, 2 },
-                new List<int> { 10, 10, 5, 4, 3, 2, 1 },
-                new List<int> { 10, 10, 4, 3, 2, 1, 1 },
-                new List<int> { 10, 10, 3, 2, 1, 1, 1 },
-                new List<int> { 0, 1, 2, 3, 4, 5, 6 }
-            };
-            max = 45;
+            map = GenerateMap(size,size,1,10);
+            max = FindOptimalPath(map) + 5;
         }
         else
         {
@@ -188,6 +237,21 @@ public class PrincessGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Up();
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            Down();
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            Left();
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            Right();
+        }
     }
 }
