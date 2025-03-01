@@ -45,7 +45,9 @@ public class Num : MonoBehaviour
         switch (state)
         {
             case 0:
-                image.color = Color.white; break;
+                Color color = Color.white;
+                ColorUtility.TryParseHtmlString("#DEEAF4", out color);
+                image.color = color; break;
             case 1:
                 image.color = Color.red; break;
             case 2:

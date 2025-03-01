@@ -28,10 +28,13 @@ public class DiceGame : MonoBehaviour
     int AiWins = 0;
     [SerializeField]
     int PlayerWins = 0;
+    [SerializeField]
+    TextMeshProUGUI TurnText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
         Turn = 1;
+        TurnText.text = "Раунд: " + Turn;
         AiWins = 0;
         PlayerWins = 0;
         player = 0;
@@ -121,6 +124,7 @@ public class DiceGame : MonoBehaviour
                 WinPanel.SetActive(true);
                 yield return new WaitForSeconds(2);
                 Turn++;
+                TurnText.text = "Раунд: " + Turn;   
                 player = 0;
                 ai = 0;
                 rates.SetActive(false);
@@ -140,7 +144,6 @@ public class DiceGame : MonoBehaviour
             Result.text = "Ты проиграл!";
             level.Win();
         }
-
     }
  
     public void PlayerWin()

@@ -31,10 +31,13 @@ public class UltimatumGame : MonoBehaviour
     GameObject offerPanel;
     [SerializeField]
     TextMeshProUGUI offerText;
+    [SerializeField]
+    TextMeshProUGUI TurnText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
         Turn = 1;
+        TurnText.text = "Раунд: " + Turn;
         player = 0;
         ai = 0;
         slider.value = 0;
@@ -107,7 +110,9 @@ public class UltimatumGame : MonoBehaviour
             yield return new WaitForSeconds(2);
             ResultPanel.SetActive(false);
             Turn++;
-            if(Turn == 2)
+            TurnText.text = "Раунд: " + Turn;
+
+            if (Turn == 2)
             {
                 offerButton.SetActive(false);
                 switch (type) {
