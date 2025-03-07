@@ -70,26 +70,29 @@ public class HanoiGame : MonoBehaviour
     }
     public void SelectRing(GameObject ring)
     {
-        Tower tower;
-        switch (ring.GetComponent<Ring>().curTower)
+        if (curRing == null)
         {
-            case 1:
-                tower = leftTower.GetComponent<Tower>();
-                break;
-            case 2:
-                tower = centerTower.GetComponent<Tower>();
-                break;
-            case 3:
-                tower = rightTower.GetComponent<Tower>();
-                break;
-            default:
-                tower = new Tower();
-                break;
-        }
-        if (tower.TryCatch(ring))
-        {
-            curRing = ring;
-            curRing.GetComponent<RectTransform>().localPosition += new Vector3(0, 350 - curRing.GetComponent<RectTransform>().localPosition.y);
+            Tower tower;
+            switch (ring.GetComponent<Ring>().curTower)
+            {
+                case 1:
+                    tower = leftTower.GetComponent<Tower>();
+                    break;
+                case 2:
+                    tower = centerTower.GetComponent<Tower>();
+                    break;
+                case 3:
+                    tower = rightTower.GetComponent<Tower>();
+                    break;
+                default:
+                    tower = new Tower();
+                    break;
+            }
+            if (tower.TryCatch(ring))
+            {
+                curRing = ring;
+                curRing.GetComponent<RectTransform>().localPosition += new Vector3(0, 350 - curRing.GetComponent<RectTransform>().localPosition.y);
+            }
         }
         
     }

@@ -16,6 +16,8 @@ public class UltimatumGame : MonoBehaviour
     [SerializeField]
     GameObject ResultPanel;
     [SerializeField]
+    GameObject ResultButton;
+    [SerializeField]
     TextMeshProUGUI ResultText;
     [SerializeField]
     UltimatumLevels level;
@@ -43,6 +45,7 @@ public class UltimatumGame : MonoBehaviour
         slider.value = 0;
         Text.text = "0%";
         ResultPanel.SetActive(false);
+        ResultButton.SetActive(false);
         offerButton.SetActive(true);
         offerPanel.SetActive(false);
     }
@@ -124,7 +127,7 @@ public class UltimatumGame : MonoBehaviour
                         {
                             AiOffer( UnityEngine.Random.Range((int)(player*100), 100));
                         }
-                        else AiOffer(Math.Abs(1-player < 0.01f ? 0.01f : 1-player)*100);
+                        else AiOffer(player*100);
                         break;
                     case 3:
                         AiOffer(UnityEngine.Random.Range(0, 100));
@@ -141,29 +144,30 @@ public class UltimatumGame : MonoBehaviour
             switch (type)
             {
                 case 1:
-                    analysis += "Ваш оппонент был рационален, он принимал предложение, даже если бы он оказался в меньшинстве. А вам предложил разделить пополам. Для победы стоило предложить хотя бы на 1 процент более чем половина, что вы и сделали, предложив " + (player - 0.5f) * 100;
+                    analysis += "Ваш оппонент был рационален, он принимал предложение, даже если бы он оказался в меньшинстве. А вам предложил разделить пополам. Для победы стоило предложить хотя бы на 1 процент более чем половина"+ (player > ai ? ", что вы и сделали, предложив " + Math.Round(player - 0.5f,2) * 100 : ".") ;
                     break;
                 case 2:
                     analysis += "Ваш оппонент был эмоциональным, он принимал предложение, даже если бы он оказался в меньшинстве.А вам предлагал такое, чтобы точно не проиграть, а в идеале победить, ведь вы его обидели. Победить тут сложно, оппонент всегда будет стараться вывести на ничью ";
                     break;
                 case 3:
-                    analysis += "Ваш оппонент случайно принимал решения, для победы нужно было лишь чуточку удачи";
+                    analysis += "Ваш оппонент случайно принимал решения.";
                     break;
 
 
             }
             if (player > ai)
             {
-                ResultText.text = "Вы выйграли набрав " + player * 100;
+                ResultText.text = "Вы выйграли набрав " + Math.Round(player, 2) * 100;
             }
             else if(player < ai)
             {
-                ResultText.text = "Вы проиграли набрав " + player * 100 + " против " + ai * 100 + " у оппонента";
+                ResultText.text = "Вы проиграли набрав " + Math.Round(player,2) * 100 + " против " + ai * 100 + " у оппонента";
             }
             else
-                ResultText.text = "Ничья! Вы набрали " + player * 100 + " против " + ai * 100 + " у оппонента";
+                ResultText.text = "Ничья! Вы набрали " + Math.Round(player, 2) * 100 + " против " + ai * 100 + " у оппонента";
             ResultText.text += analysis;
-            level.Win();
+            ResultPanel.SetActive(true);
+            ResultButton.SetActive(true);
         }
         
     }

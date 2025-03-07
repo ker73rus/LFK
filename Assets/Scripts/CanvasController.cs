@@ -5,6 +5,8 @@ public class CanvasController : MonoBehaviour
     [SerializeField]
     GameObject MenuPanel;
     [SerializeField]
+    GameObject AboutPanel;
+    [SerializeField]
     GameObject MiniGamesPanel;
     [SerializeField]
     GameObject MainGamePanel;
@@ -25,6 +27,7 @@ public class CanvasController : MonoBehaviour
     public void MainGame()
     {
         MainGamePanel.SetActive(true);
+        MainGamePanel.GetComponent<MainGame>().Start();
         MenuPanel.SetActive(false);
     }
     public void Exit()
@@ -77,6 +80,7 @@ public class CanvasController : MonoBehaviour
         MiniGamesPanel.SetActive(true);
     }
     public void Menu() {
+        AboutPanel.SetActive(false);
         MiniGamesPanel.SetActive(false);
         MainGamePanel.SetActive(false);
         MenuPanel.SetActive(true);   
@@ -91,5 +95,11 @@ public class CanvasController : MonoBehaviour
         CodeGamePanel.SetActive(false);
         HanoiGamePanel.SetActive(false);
         MiniGamesPanel.SetActive(true);
+    }
+    public void About()
+    {
+        AboutPanel.SetActive(true);
+        AboutPanel.GetComponent<AboutPaging>().Start();
+        MenuPanel.SetActive(false );
     }
 }

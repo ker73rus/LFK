@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -198,7 +198,7 @@ class GameSolver
                 }
             }
 
-            // ���� ����� 1 ����� ����� �������� � �������� ���� ����
+            // Если игрок 1 может сразу победить — выбираем этот путь
             foreach (var move in lastState.GenerateMoves())
             {
                 if (move.IsWinningMove() && lastState.IsPlayerTurn)
@@ -235,7 +235,7 @@ class GameSolver
 
     public string GetTextFromPath(List<GameState> path)
     {
-        if (path.Count == 0) return "�� �������� � ����������� ���������: ��� �� �� �� ������, �������� ��� ��������.";
+        if (path.Count == 0) return "Ты оказался в безвыходном положении: что бы ты ни сделал, проигрыш был неминуем.";
 
         return string.Join(" -> ", path.Select((state, index) =>
             index == path.Count - 1 ? $"{{{state.ToString().Trim('(', ')')}}}" :
@@ -258,6 +258,10 @@ public class MainGame : MonoBehaviour
     GameObject AnalysisPanel;
     [SerializeField]
     GameObject TutorialText;
+    [SerializeField]
+    GameObject TutorialAsk;
+    [SerializeField]
+    GameObject TutorialNext;
     [SerializeField]
     GameObject LevelsPanel;
     [SerializeField]
@@ -316,14 +320,14 @@ public class MainGame : MonoBehaviour
     Level level;
 
     List<Level> levels = new() {
-        new Level("��������", 1, 30,31, (left) => { return left+=1; },"+1", (left) => {return left+=10; },"+10") ,
-        new Level("������", 1, 30,31, (left) => { return left+=1; },"+1", (left) => {return left+=10; }, "+10") ,
-        new Level("�������", 2,7,69,77, (left) => { return left+=1; },"+1", (left) => { return left *= 2; },"*2", (right) => { return right+=1; }, "+1",(right) => { return right *= 2; }, "*2"),
-        new Level("�������+", 2,3,57,61, (left) => { return left+=1; },"+1", (left) => { return left *= 4; }, "*4",(right) => { return right+=1; },"+1", (right) => { return right *= 4; }, "*4"),
-        new Level("�������", 3, 8, 32, need: 41,(lr) => {return (lr.Item1+1,lr.Item2+2); },"+1 ; +2", 
+        new Level("Обучение", 1, 9,31, (left) => { return left+=1; },"+1", (left) => {return left+=10; },"+10") ,
+        new Level("Легкий", 1, 9,49, (left) => { return left+=1; },"+1", (left) => {return left+=10; }, "+10") ,
+        new Level("Средний", 2,7,9,77, (left) => { return left+=1; },"+1", (left) => { return left *= 2; },"*2", (right) => { return right+=1; }, "+1",(right) => { return right *= 2; }, "*2"),
+        new Level("Средний+", 2,3,9,61, (left) => { return left+=1; },"+1", (left) => { return left *= 4; }, "*4",(right) => { return right+=1; },"+1", (right) => { return right *= 4; }, "*4"),
+        new Level("Тяжелый", 3, 8, 9, need: 41,(lr) => {return (lr.Item1+1,lr.Item2+2); },"+1 ; +2", 
             (lr) => {return (lr.Item1*2,lr.Item2); }, "*2",(_) => { return (_); }, "null" ),
-        new Level("�������+", 2,8,32,41, (left) => { return left+=1; }, "+1",(left) => { return left *= 4; }, "*4", (right) => { return right+=1; },"+1", (right) => { return right *= 4; }, "*4"),
-
+        new Level("Тяжелый+", 3, 8, 9, need: 56,(lr) => {return (lr.Item1+1,lr.Item2+2); },"+1 ; +2", 
+            (lr) => {return (lr.Item1*4,lr.Item2); }, "*4",(_) => { return (_); }, "null" )
     };
 
     [SerializeField]
@@ -333,32 +337,73 @@ public class MainGame : MonoBehaviour
 
     (int prevLeft, int prevRight) p = (0,0);
 
-    bool Tutorial = true;
+    [SerializeField]
+    int Tutorial = 0;
+    string quest = "Вы уже умеете играть?";
+    string page1 = "Пример условий игры: \n Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежат две кучи камней. Игроки ходят по очереди, первый ход делает Петя. За один ход игрок может добавить в одну из куч (по своему выбору) один камень или увеличить количество камней в куче в два раза. Например, пусть в одной куче 10 камней, а в другой 5 камней; такую позицию в игре будем обозначать (10, 5). Тогда за один ход можно получить любую из четырёх позиций: (11, 5), (20, 5), (10, 6), (10, 10). Для того чтобы делать ходы, у каждого игрока есть неограниченное количество камней. Игра завершается в тот момент, когда суммарное количество камней в кучах становится не менее 77. ";
+    string page2 = "Победителем считается игрок, сделавший последний ход, т.е. первым получивший такую позицию, при которой в кучах будет 77 или больше камней. В начальный момент в первой куче было семь камней, во второй куче – S камней; 1 ≤ S ≤ 69. Будем говорить, что игрок имеет выигрышную стратегию, если он может выиграть при любых ходах противника. Описать стратегию игрока – значит описать, какой ход он должен сделать в любой ситуации, которая ему может встретиться при различной игре противника. В описание выигрышной стратегии не следует включать ходы играющего по этой стратегии игрока, не являющиеся для него безусловно выигрышными, т.е. не являющиеся выигрышными независимо от игры противника";
 
     public bool player = true;
     [SerializeField]
     int miss = 0;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public void Start()
     {
-        if (LevelsPanel.activeSelf)
+        Tutorial = 0;
+        Next();
+    }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Next()
+    {
+        if (Tutorial == 0)
         {
-            LoadLevels();
-        }
-        else if (Tutorial) { 
-            TutorialPanel.SetActive(true);
-            TutorialText.SetActive(true);
-        }
-        else if (!Tutorial)
-        {
-            TutorialPanel.SetActive(false);
+            LevelsPanel.SetActive(false);
             GamePanel.SetActive(false);
             AnalysisPanel.SetActive(false);
-            LevelsPanel.SetActive(true);
-            LoadLevels();
+            TutorialPanel.SetActive(true);
+            TutorialText.SetActive(true);
+            TutorialAsk.SetActive(true);
+            TutorialNext.SetActive(false);
+            TutorialText.GetComponent<TextMeshProUGUI>().text = quest;
+            TutorialText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Center;
+        }
+        else if (Tutorial == 1)
+        {
+            TutorialAsk.SetActive (false);
+            TutorialNext.SetActive(true);
+            TutorialText.GetComponent<TextMeshProUGUI>().text = page1;
+            TutorialText.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Flush;
+
+
+
+        }
+        else if (Tutorial == 2)
+        {
+            TutorialText.GetComponent<TextMeshProUGUI>().text = page2;
+        }
+        else if (Tutorial == 3) {
+                TutorialPanel.SetActive(false);
+                GamePanel.SetActive(false);
+                AnalysisPanel.SetActive(false);
+                LevelsPanel.SetActive(true);
+                LoadLevels();
         }
     }
-
+    public void IKnow()
+    {
+        Tutorial = 3;
+        Next();
+    }
+    public void IDontKnow()
+    {
+        Tutorial = 1;
+        Next();
+    }
+    public void HowToPlay()
+    {
+        Tutorial = 0;
+        Next();    
+    }
     void LoadLevels()
     {
         float i = -3.5f;
@@ -461,7 +506,7 @@ public class MainGame : MonoBehaviour
                 break;
         
         }
-        GameState state = new GameState(left, right, level, true); // ��������� ���������
+        GameState state = new GameState(left, right, level, true); // Начальное состояние
         turnStories.Clear();
         GameSolver solver = new GameSolver();
         List<GameState> curTurnStrategy = solver.FindShortestWinningStrategy(state);
@@ -472,111 +517,6 @@ public class MainGame : MonoBehaviour
         print(strategy);
     }
 
-    /*bool FindPath(int l, int r, int c)
-    { 
-        if (l+r >= needScore)
-        {
-
-            if(c % 2 == 0)
-                return true;
-            else 
-                return false;
-        }
-        else
-        {
-            switch(level.id)
-            {
-                case 1:
-                    if (FindPath(level.LFMove(l), r, c + 1))
-                    {
-                        
-                        if (c % 2 != 0)
-                        {
-                            if (level.LSMove(l) >= needScore)
-                            {
-                                res = "";
-                                return false;
-                            }
-                            else {
-                                res += "[" + level.LFMove(l) + "]";
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            if (level.LSMove(l) >= needScore)
-                            {
-                                res = "";
-                                return false;
-                            }
-                            else
-                            {
-                                res += "(" + level.LFMove(l) + ")";
-                                return true;
-                            }
-                        }
-
-                    }
-                    else if (FindPath(level.LSMove(l), r, c + 1))
-                    {
-                        if (c % 2 != 0)
-                        {
-                            if (level.LFMove(l) >= needScore)
-                            {
-                                res = "";
-                                return false;
-                            }
-                            else
-                            {
-                                res += "[" + level.LSMove(l) + "]";
-                                return true;
-                            }
-                        }
-                        else {
-                            res += "(" + level.LSMove(l) + ")";
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                case 2:
-                    if (FindPath(level.LFMove(l), r, c + 1))
-                    {
-                        res += "(" + level.LFMove(l) + " ; " + r + ")";
-                        if (c % 2 == 0) return false;
-                        else return true;
-                    }
-                    else if (FindPath(level.LSMove(l), r, c + 1))
-                    {
-                        res += "(" + level.LFMove(l) + " ; " + r + ")";
-                        if (c % 2 == 0) return false;
-                        else return true;
-                    }
-                    else if (FindPath(l, level.RFMove(r), c + 1))
-                    {
-                        res += "(" + l + " ; " + level.RFMove(r) + ")";
-                        if (c % 2 == 0) return false;
-                        else return true;
-                    }
-                    else if (FindPath(l, level.RFMove(r), c + 1))
-                    {
-                        res += "(" + l + " ; " + level.RSMove(r) + ")";
-                        if (c % 2 == 0) return false;
-                        else return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                default:
-                    return false;
-                    
-            }
-
-        }
-    }*/
 
 
     public void LeftFirstMove(Func<(int, int), (int, int)> lfm)
@@ -733,10 +673,8 @@ public class MainGame : MonoBehaviour
     }
     public void UnderstandTutorial()
     {
-        TutorialPanel.SetActive(false);
-        Tutorial = false;
-        LevelsPanel.SetActive(true);
-        LoadLevels();
+        Tutorial++;
+        Next();
     }
     public void UnderstandAnalysis()
     {
@@ -761,13 +699,13 @@ public class MainGame : MonoBehaviour
             AnalysisPanel.SetActive(true);
             if (player)
             {
-                resultText.text = "�� �������! \n  ����������� ���������: ";
+                resultText.text = "Ты победил! \n  Изначальная стратегия: ";
                 
             }
             else
             {
-                resultText.text = "�� ��������! �������� ���������, ����� ������, �� �� ��������� �� ������: \n";
-                if (!(turnStories.Count() == 1 && solver.GetTextFromPath(turnStories.First()) == "�� �������� � ����������� ���������: ��� �� �� �� ������, �������� ��� ��������."))
+                resultText.text = "Ты проиграл! Посмотри аналитику, чтобы понять, всё ли правильно ты сделал: \n";
+                if (!(turnStories.Count() == 1 && solver.GetTextFromPath(turnStories.First()) == "Ты оказался в безвыходном положении: что бы ты ни сделал, проигрыш был неминуем."))
                     miss++;
 
             }
@@ -778,14 +716,14 @@ public class MainGame : MonoBehaviour
                 if (item.Equals(turnStories.First()))
                     resultText.text += solver.GetTextFromPath(item) + "\n";
                 else if(item.Equals(turnStories.Last()))
-                    resultText.text += "\n �������� ���������: " + solver.GetTextFromPath(item);
+                    resultText.text += "\n Конечная стратегия: " + solver.GetTextFromPath(item);
                 else
-                    resultText.text += "\n �� ���������� �� ��������� ���������: " + solver.GetTextFromPath(item);
+                    resultText.text += "\n Ты отклонился от идеальной стратегии: " + solver.GetTextFromPath(item);
             }
             if(player)
-                resultText.text += "\n ������: " + miss + " - " + (Mathf.RoundToInt(miss/sum * 100) == 0  && miss != 0 ? 1: Mathf.RoundToInt(miss / sum * 100)) + "%";
+                resultText.text += "\n Ошибки: " + miss + " - " + (Mathf.RoundToInt(miss/sum * 100) == 0  && miss != 0 ? 1: Mathf.RoundToInt(miss / sum * 100)) + "%";
             else
-                resultText.text += "\n ������: " + miss + " -  100%";
+                resultText.text += "\n Ошибки: " + miss + " -  100%";
         }
         else {
             if (player)
@@ -795,7 +733,7 @@ public class MainGame : MonoBehaviour
             else
             {
                 player = true;
-                GameState state = new GameState(left, right, level, true); // ������� ���������
+                GameState state = new GameState(left, right, level, true); // Текущее состояние
                 GameSolver solver = new GameSolver();
                 List<GameState> curTurnStrategy = solver.FindShortestWinningStrategy(state);
                 List<GameState> t = turnStories.Last();
@@ -829,10 +767,10 @@ public class MainGame : MonoBehaviour
     }
     void Visual()
     {
-        summ.text = "����� ������: \n" + (left + right);
+        summ.text = "Сумма камней: \n" + (left + right);
         leftText.text = left.ToString();
         rightText.text = right.ToString();
-        target.text = "����� ������� \n" + needScore; 
+        target.text = "Нужно набрать \n" + needScore; 
     }
 
     public void LeftFirstMove(Func<int,int> lfm)
