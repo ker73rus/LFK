@@ -51,7 +51,7 @@ public class Num : MonoBehaviour
             case 1:
                 image.color = Color.red; break;
             case 2:
-                image.color = Color.yellow; break;
+                image.color = Color.grey; break;
             case 3:
                 image.color = Color.green; break;
             default:

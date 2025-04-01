@@ -118,7 +118,7 @@ public class DiceGame : MonoBehaviour
                 if (Result.text == "Раунд за тобой") Result.text = (PlayerWins > AiWins ? "Ты победил" : "Раунд за компьютером");
                 else Result.text = (PlayerWins >= AiWins ? "Раунд за тобой" : "Ты проиграл!");
             }
-            if (Turn == 2 && (PlayerWins == 2 || AiWins == 2)) { level.Win(); }
+            if (Turn == 2 && (PlayerWins == 2 || AiWins == 2)) { if (AiWins == 2) level.lose = true;  level.Win(); }
             else
             {
                 WinPanel.SetActive(true);
@@ -142,6 +142,7 @@ public class DiceGame : MonoBehaviour
         }
         else {
             Result.text = "Ты проиграл!";
+            level.lose = true;
             level.Win();
         }
     }

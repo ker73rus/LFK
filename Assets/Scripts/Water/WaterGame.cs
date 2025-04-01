@@ -1,8 +1,9 @@
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WaterGame : MonoBehaviour
+public class WaterGame : MonoBehaviour, Game
 {
     [SerializeField]
     TextMeshProUGUI lText;

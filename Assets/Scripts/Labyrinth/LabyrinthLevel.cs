@@ -1,7 +1,8 @@
+using Assets.Scripts;
 using System.Collections;
 using UnityEngine;
 
-public class LabyrinthLevel : MonoBehaviour
+public class LabyrinthLevel : MonoBehaviour, Levels
 {
     [SerializeField]
     GameObject LevelsPanel;
@@ -15,14 +16,27 @@ public class LabyrinthLevel : MonoBehaviour
     GameObject Level3;
     [SerializeField]
     GameObject WinPanel;
+    [SerializeField]
+    GameObject ToMiniGamesButton;
+    [SerializeField]
+    GameObject ToLevelsButton;
+    public bool win { get; set; } = false;
+    public bool story { get; set; } = false;
+    public bool lose { get; set; } = false;
+    public bool tutor { get; set; } = false;
 
-    public void Start()
+
+    public void Begin()
     {
         toLevelsPanel();
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void Win()
     {
-        StartCoroutine(WinC());
+        win = true;
+        if (!story)
+            StartCoroutine(WinC());
     }
     IEnumerator WinC()
     {
@@ -34,6 +48,7 @@ public class LabyrinthLevel : MonoBehaviour
 
     public void loadLevel1()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(true);
         Level1.SetActive(true);
@@ -41,9 +56,12 @@ public class LabyrinthLevel : MonoBehaviour
         Level2.SetActive(false);
         Level3.SetActive(false);
         LevelsPanel.SetActive(false);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void loadLevel2()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(true);
         Level2.SetActive(true);
@@ -51,9 +69,12 @@ public class LabyrinthLevel : MonoBehaviour
         Level1.SetActive(false);
         Level3.SetActive(false);
         LevelsPanel.SetActive(false);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void loadLevel3()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(true);
         Level3.SetActive(true);
@@ -61,14 +82,19 @@ public class LabyrinthLevel : MonoBehaviour
         Level1.SetActive(false);
         Level2.SetActive(false);
         LevelsPanel.SetActive(false);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void toLevelsPanel()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(false);
         Level3.SetActive(false);
         Level1.SetActive(false);
         Level2.SetActive(false);
         LevelsPanel.SetActive(true);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
 }

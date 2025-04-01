@@ -165,9 +165,13 @@ public class UltimatumGame : MonoBehaviour
             }
             else
                 ResultText.text = "Ничья! Вы набрали " + Math.Round(player, 2) * 100 + " против " + ai * 100 + " у оппонента";
-            ResultText.text += analysis;
-            ResultPanel.SetActive(true);
-            ResultButton.SetActive(true);
+            if (!level.lose)
+            {
+                ResultText.text += analysis;
+                ResultPanel.SetActive(true);
+                ResultButton.SetActive(true);
+            }
+
         }
         
     }

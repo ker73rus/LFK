@@ -346,8 +346,15 @@ public class MainGame : MonoBehaviour
     public bool player = true;
     [SerializeField]
     int miss = 0;
+    public bool win = false;
+    public bool lose = false;
+    public bool story = false;
+    [SerializeField]
+    GameObject ToMiniGamesButton;
+    [SerializeField]
+    GameObject ToLevelsButton;
 
-    public void Start()
+    public void Begin()
     {
         Tutorial = 0;
         Next();
@@ -424,11 +431,14 @@ public class MainGame : MonoBehaviour
 
         }
     }
-    void LoadLevel(int index)
+    public void LoadLevel(int index)
     {
+        win = false;
+        lose = false;
         level = levels[index];
         player = true;
         LevelsPanel.GetComponentsInChildren<Button>().Where(x => x.CompareTag("Respawn")).Select(x => x).ToList().ForEach( x => Destroy(x.gameObject));
+        TutorialPanel.SetActive(false);
         switch (level.id) {
             case 1:
                 needScore = level.need;
@@ -515,6 +525,8 @@ public class MainGame : MonoBehaviour
         p.prevLeft = left; p.prevRight = right;
         string strategy =  solver.GetTextFromPath(curTurnStrategy);
         print(strategy);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
 
 
@@ -678,6 +690,12 @@ public class MainGame : MonoBehaviour
     }
     public void UnderstandAnalysis()
     {
+        if(resultText.text.Contains("Ты проиграл!"))
+        {
+            lose = true;
+        }
+        else
+            win = true;
         AnalysisPanel.SetActive(false);
         LevelsPanel.SetActive(true);
         LoadLevels();
@@ -721,7 +739,7 @@ public class MainGame : MonoBehaviour
                     resultText.text += "\n Ты отклонился от идеальной стратегии: " + solver.GetTextFromPath(item);
             }
             if(player)
-                resultText.text += "\n Ошибки: " + miss + " - " + (Mathf.RoundToInt(miss/sum * 100) == 0  && miss != 0 ? 1: Mathf.RoundToInt(miss / sum * 100)) + "%";
+                resultText.text += "\n Ошибки: " + miss + "\n Прогресс: " + (Mathf.RoundToInt( (float)miss/(float)sum * 100) == 0  && miss != 0 ? 1: Mathf.RoundToInt((float)miss / (float)sum * 100)) + "%";
             else
                 resultText.text += "\n Ошибки: " + miss + " -  100%";
         }

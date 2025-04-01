@@ -108,12 +108,12 @@ public class PrincessGame : MonoBehaviour
         if (level == 2)
         {
             map = GenerateMap(size, size, 1, 10);
-            max = FindOptimalPath(map) + 5;
+            max = FindOptimalPath(map);
         }
         else if (level == 3)
         {
-            map = GenerateMap(size,size,1,10);
-            max = FindOptimalPath(map) + 5;
+            map = GenerateMap(size,size,4,10);
+            max = FindOptimalPath(map);
         }
         else
         {
@@ -152,6 +152,7 @@ public class PrincessGame : MonoBehaviour
             if (max < 0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
+                Level.lose = true;
                 Level.Win();
             }
         }
@@ -178,6 +179,7 @@ public class PrincessGame : MonoBehaviour
             if (max < 0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
+                Level.lose = true;
                 Level.Win();
             }
         }
@@ -204,6 +206,8 @@ public class PrincessGame : MonoBehaviour
             if (max < 0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
+                Level.lose = true;
+
                 Level.Win();
             }
         }
@@ -230,6 +234,8 @@ public class PrincessGame : MonoBehaviour
             if(max < 0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
+                Level.lose = true;
+
                 Level.Win();
             }    
         }
@@ -237,21 +243,25 @@ public class PrincessGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        if(max > 0)
         {
-            Up();
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Up();
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+            {
+                Down();
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+            {
+                Left();
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            {
+                Right();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            Down();
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        {
-            Left();
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
-            Right();
-        }
+       
     }
 }

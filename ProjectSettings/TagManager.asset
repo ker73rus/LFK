@@ -9,6 +9,8 @@ TagManager:
   - ThreeLeft
   - ThreeRight
   - TwoRight
+  - Story
+  - Stones
   layers:
   - Default
   - TransparentFX

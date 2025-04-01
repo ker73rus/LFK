@@ -1,7 +1,8 @@
+using Assets.Scripts;
 using System.Collections;
 using UnityEngine;
 
-public class WaterLevel : MonoBehaviour
+public class WaterLevel : MonoBehaviour, Levels
 {
     [SerializeField]
     GameObject LevelsPanel;
@@ -15,14 +16,47 @@ public class WaterLevel : MonoBehaviour
     GameObject Level3;
     [SerializeField]
     GameObject WinPanel;
+    [SerializeField]
+    GameObject TutorialPanel;
+    [SerializeField]
+    GameObject ToMiniGamesButton;
+    [SerializeField]
+    GameObject ToLevelsButton;
+    public bool win { get; set; } = false;
+    public bool story { get; set; } = false;
+    public bool lose { get; set; } = false;
+    public bool tutor { get; set; } = true;
 
-    public void Start()
+    public void Begin()
     {
-        toLevelsPanel();
+        if (!tutor)
+        {
+            toLevelsPanel();
+            ToMiniGamesButton.SetActive(!story);
+            ToLevelsButton.SetActive(!story);
+        }
+        else
+        {
+            TutorialPanel.SetActive(true);
+        }
+
     }
+    public void IKnow()
+    {
+        TutorialPanel.SetActive(false);
+        tutor = false;
+        Begin();
+    }
+    public void IDontKnow()
+    {
+
+    }
+
     public void Win()
     {
-        StartCoroutine(WinC());
+        win = true;
+        if (!story)
+            StartCoroutine(WinC());
     }
     IEnumerator WinC()
     {
@@ -41,9 +75,13 @@ public class WaterLevel : MonoBehaviour
         Level2.SetActive(false);
         Level3.SetActive(false);
         LevelsPanel.SetActive(false);
+        win = false;
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void loadLevel2()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(true);
         Level2.SetActive(true);
@@ -51,9 +89,12 @@ public class WaterLevel : MonoBehaviour
         Level1.SetActive(false);
         Level3.SetActive(false);
         LevelsPanel.SetActive(false);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void loadLevel3()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(true);
         Level3.SetActive(true);
@@ -61,14 +102,19 @@ public class WaterLevel : MonoBehaviour
         Level1.SetActive(false);
         Level2.SetActive(false);
         LevelsPanel.SetActive(false);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void toLevelsPanel()
     {
+        win = false;
         WinPanel.SetActive(false);
         GamePanel.SetActive(false);
         Level3.SetActive(false);
         Level1.SetActive(false);
         Level2.SetActive(false);
         LevelsPanel.SetActive(true);
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
 }
