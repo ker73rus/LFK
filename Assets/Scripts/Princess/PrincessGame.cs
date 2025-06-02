@@ -149,7 +149,7 @@ public class PrincessGame : MonoBehaviour
                 max-= map[player.y][player.x];
             }
             Time.text = "Осталось времени:" + max;
-            if (max < 0)
+            if (max <=0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
                 Level.lose = true;
@@ -176,7 +176,7 @@ public class PrincessGame : MonoBehaviour
                 max -= map[player.y][player.x];
             }
             Time.text = "Осталось времени:" + max;
-            if (max < 0)
+            if (max <=0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
                 Level.lose = true;
@@ -203,7 +203,7 @@ public class PrincessGame : MonoBehaviour
                 max -= map[player.y][player.x];
             }
             Time.text = "Осталось времени:" + max;
-            if (max < 0)
+            if (max <=0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
                 Level.lose = true;
@@ -231,7 +231,7 @@ public class PrincessGame : MonoBehaviour
                 max -= map[player.y][player.x];
             }
             Time.text = "Осталось времени:" + max;
-            if(max < 0)
+            if(max <=0)
             {
                 Result.text = "Ты проиграл! Чудовище схватило тебя";
                 Level.lose = true;

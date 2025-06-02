@@ -1,5 +1,6 @@
 using Assets.Scripts;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class HanoiLevels : MonoBehaviour, Levels    
@@ -20,17 +21,45 @@ public class HanoiLevels : MonoBehaviour, Levels
     GameObject ToMiniGamesButton;
     [SerializeField]
     GameObject ToLevelsButton;
+    [SerializeField]
+    GameObject TutorialPanel;
+    [SerializeField]
+    GameObject TutorialAsk;
+    [SerializeField]
+    GameObject TutorialNext;
+    [SerializeField]
+    TextMeshProUGUI TutorialText;
     public bool win { get; set; } = false;
-    public bool lose { get; set; } = false;
     public bool story { get; set; } = false;
+    public bool lose { get; set; } = false;
     public bool tutor { get; set; } = false;
 
 
     public void Begin()
     {
+        TutorialPanel.SetActive(true);
+        TutorialText.text = "¬ы уже умеете играть?";
+        TutorialAsk.SetActive(true);
+        TutorialNext.SetActive(false);
+        LevelsPanel.SetActive(false);
+        GamePanel.SetActive(false);
+    }
+    public void UnderstandTutorial()
+    {
+        TutorialPanel.SetActive(false);
         toLevelsPanel();
         ToMiniGamesButton.SetActive(!story);
         ToLevelsButton.SetActive(!story);
+    }
+    public void IKnow()
+    {
+        UnderstandTutorial();
+    }
+    public void IDontKnow()
+    {
+        TutorialText.text = "¬ этой мини-игре тебе нужно переместить кольца с одного стержн€ на другой, соблюда€ правила: нельз€ класть большое кольцо на маленькое, и можно перемещать только одно кольцо за ход. ÷ель игры Ч перенести все кольца на целевой стержень за минимальное количество ходов.\r\n“ебе придЄтс€ планировать последовательность ходов, чтобы не нарушить правила. Ќапример, сначала нужно переместить маленькие кольца, чтобы освободить место дл€ больших. „тобы успешно играть, тебе понадоб€тс€ логическое мышление дл€ планировани€ последовательности ходов, пространственное мышление дл€ визуализации перемещений колец, а также терпение и внимание к детал€м.\r\n";
+        TutorialNext.SetActive(true);
+        TutorialAsk.SetActive(false);
     }
     public void Win()
     {

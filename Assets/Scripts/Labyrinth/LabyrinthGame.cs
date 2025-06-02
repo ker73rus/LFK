@@ -38,7 +38,7 @@ public class LabyrinthGame : MonoBehaviour
         }
         marks.Clear();
         player = (0, 0);
-        Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
+        Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
         if (level == 2)
         {
             map = new()
@@ -76,7 +76,7 @@ public class LabyrinthGame : MonoBehaviour
             else if (map[player.y - 1][player.x] != 1)
             {
                 player.y -= 1;
-                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
+                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
             }
         }
     }
@@ -89,7 +89,7 @@ public class LabyrinthGame : MonoBehaviour
             else if (map[player.y + 1][player.x] != 1)
             {
                 player.y += 1;
-                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
+                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
             }
         }
     }
@@ -102,7 +102,7 @@ public class LabyrinthGame : MonoBehaviour
             else if (map[player.y][player.x - 1] != 1)
             {
                 player.x -= 1;
-                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
+                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
             }
         }
     }
@@ -115,7 +115,7 @@ public class LabyrinthGame : MonoBehaviour
             else if (map[player.y][player.x + 1] != 1)
             {
                 player.x += 1;
-                Player.localPosition = new Vector3(-330 + (110 * player.x), 330 + (-110 * player.y));
+                Player.localPosition = new Vector3(-220 + (110 * player.x), 220 + (-110 * player.y));
             }
         }
     }

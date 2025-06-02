@@ -1,5 +1,6 @@
 using Assets.Scripts;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class WaterLevel : MonoBehaviour, Levels
@@ -17,41 +18,49 @@ public class WaterLevel : MonoBehaviour, Levels
     [SerializeField]
     GameObject WinPanel;
     [SerializeField]
-    GameObject TutorialPanel;
-    [SerializeField]
     GameObject ToMiniGamesButton;
     [SerializeField]
     GameObject ToLevelsButton;
+    [SerializeField]
+    GameObject TutorialPanel;
+    [SerializeField]
+    GameObject TutorialAsk;
+    [SerializeField]
+    GameObject TutorialNext;
+    [SerializeField]
+    TextMeshProUGUI TutorialText;
     public bool win { get; set; } = false;
     public bool story { get; set; } = false;
     public bool lose { get; set; } = false;
-    public bool tutor { get; set; } = true;
+    public bool tutor { get; set; } = false;
+
 
     public void Begin()
     {
-        if (!tutor)
-        {
-            toLevelsPanel();
-            ToMiniGamesButton.SetActive(!story);
-            ToLevelsButton.SetActive(!story);
-        }
-        else
-        {
-            TutorialPanel.SetActive(true);
-        }
-
+        TutorialPanel.SetActive(true);
+        TutorialText.text = "Вы уже умеете играть?";
+        TutorialAsk.SetActive(true);
+        TutorialNext.SetActive(false);
+        LevelsPanel.SetActive(false);
+        GamePanel.SetActive(false);
+    }
+    public void UnderstandTutorial()
+    {
+        TutorialPanel.SetActive(false);
+        toLevelsPanel();
+        ToMiniGamesButton.SetActive(!story);
+        ToLevelsButton.SetActive(!story);
     }
     public void IKnow()
     {
-        TutorialPanel.SetActive(false);
-        tutor = false;
-        Begin();
+        UnderstandTutorial();
     }
     public void IDontKnow()
     {
-
+        TutorialText.text = "В этой мини-игре тебе нужно отмерить определённое количество воды, переливая её между ёмкостями различного объёма. Ты можешь наполнять и опорожнять ёмкости, а также переливать воду из одной ёмкости в другую. Цель игры — получить точно заданное количество воды в одной из ёмкостей.\r\nТебе придётся планировать последовательность действий для достижения нужного количества воды. Например, если у тебя есть ёмкости на 5 и 3 литра, а нужно отмерить 4 литра, ты можешь наполнить большую ёмкость, перелить воду в меньшую, а затем снова наполнить большую. Однако будь осторожен: неправильная последовательность действий может привести к потере воды или невозможности достичь нужного количества. Чтобы успешно играть, тебе понадобятся логическое мышление для планирования последовательности действий, умение решать задачи методом проб и ошибок, а также внимательность к деталям, чтобы не пропустить нужную комбинацию.\r\n";
+        TutorialNext.SetActive(true);
+        TutorialAsk.SetActive(false);
     }
-
     public void Win()
     {
         win = true;

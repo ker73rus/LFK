@@ -501,7 +501,7 @@ public class MainGame : MonoBehaviour
 
                 ThreeFRMoveButton.onClick.RemoveAllListeners();
                 ThreeFRMoveButton.onClick.AddListener(() => { RightFirstMove(level.FMove); Visual(); });
-                ThreeFRMoveButton.GetComponentInChildren<TextMeshProUGUI>().text = level.fText;
+                ThreeFRMoveButton.GetComponentInChildren<TextMeshProUGUI>().text = "+2 ; +1";
 
                 ThreeSLMoveButton.onClick.RemoveAllListeners();
                 ThreeSLMoveButton.onClick.AddListener(() => { LeftSecondMove(level.SMove); Visual(); });
@@ -739,9 +739,13 @@ public class MainGame : MonoBehaviour
                     resultText.text += "\n Ты отклонился от идеальной стратегии: " + solver.GetTextFromPath(item);
             }
             if(player)
-                resultText.text += "\n Ошибки: " + miss + "\n Прогресс: " + (Mathf.RoundToInt( (float)miss/(float)sum * 100) == 0  && miss != 0 ? 1: Mathf.RoundToInt((float)miss / (float)sum * 100)) + "%";
+                resultText.text += "\n Ошибки: " + miss + "\n Прогресс: " + (100-(Mathf.RoundToInt( (float)miss/(float)sum * 100) == 0  && miss != 0 ? 1: Mathf.RoundToInt((float)miss / (float)sum * 100))) + "%";
             else
-                resultText.text += "\n Ошибки: " + miss + " -  100%";
+                resultText.text += "\n Ошибки: " + miss + "\n Прогресс: 0%";
+            if(miss == 0)
+            {
+                resultText.text = resultText.text.Replace("Ты", "Противник");
+            }
         }
         else {
             if (player)
